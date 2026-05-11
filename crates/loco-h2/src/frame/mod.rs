@@ -8,3 +8,6 @@ pub enum FrameErrors {
     UnknownIdSettings(u16),
     InvalidSettingsPlayload(Vec<u8>),
 }
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Frame {}

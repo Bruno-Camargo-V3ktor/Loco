@@ -17,12 +17,29 @@
 ///    DEVE ser ignorado ao receber.
 use crate::frame::{frame_type::FrameType, FrameErrors};
 
-#[derive(Debug, PartialEq, Eq)]
+#[allow(non_camel_case_types)]
+pub const ACK_FLAG: u8 = 1;
+pub const END_STREAM_FLAG: u8 = 1;
+pub const END_HEADERS_FLAG: u8 = 4;
+pub const PADDED_FLAG: u8 = 8;
+pub const PRIORITY_FLAG: u8 = 32;
+
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct FrameHeader {
     pub length: u32,           // 24 Bits
     pub frame_type: FrameType, // 8 Bits
     pub flags: u8,             // 8 Bits
     pub stream_id: u32,        // 31 Bits
+}
+
+#[allow(non_camel_case_types)]
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Flags {
+    ACK,
+    END_STREAM,
+    END_HEADERS,
+    PADDED,
+    PRIORITY,
 }
 
 impl FrameHeader {
@@ -54,5 +71,37 @@ impl FrameHeader {
         buf[5..9].copy_from_slice(&stream_bytes);
 
         buf
+    }
+
+    pub fn check_flag(&self, flag: &Flags) -> bool {
+        match flag {
+            Flags::ACK => self.flags & ACK_FLAG != 0,
+
+            Flags::END_STREAM => self.flags & END_STREAM_FLAG != 0,
+
+            Flags::END_HEADERS => self.flags & END_HEADERS_FLAG != 0,
+
+            Flags::PADDED => self.flags & PADDED_FLAG != 0,
+
+            Flags::PRIORITY => self.flags & PRIORITY_FLAG != 0,
+        }
+    }
+
+    pub fn get_flags(&self) -> Vec<Flags> {
+        let mut flags = Vec::with_capacity(8);
+
+        for flag in [
+            Flags::ACK,
+            Flags::END_STREAM,
+            Flags::END_HEADERS,
+            Flags::PADDED,
+            Flags::PRIORITY,
+        ] {
+            if self.check_flag(&flag) {
+                flags.push(flag);
+            }
+        }
+
+        flags
     }
 }
