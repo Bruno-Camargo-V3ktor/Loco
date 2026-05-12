@@ -1,7 +1,7 @@
 pub mod frame_type;
 pub mod header;
 pub mod payload;
-pub mod settings;
+pub mod setting;
 
 use header::FrameHeader;
 use payload::FramePayload;
