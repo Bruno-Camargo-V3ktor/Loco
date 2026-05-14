@@ -1,10 +1,9 @@
 pub mod frame_type;
 pub mod header;
-pub mod payload;
-pub mod setting;
+pub mod payloads;
 
 use header::FrameHeader;
-use payload::FramePayload;
+use payloads::FramePayload;
 
 #[derive(Clone, Debug)]
 pub enum FrameErrors {
@@ -18,7 +17,7 @@ pub enum FrameErrors {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Frame {
     pub header: header::FrameHeader,
-    pub payload: payload::FramePayload,
+    pub payload: payloads::FramePayload,
 }
 
 impl Frame {

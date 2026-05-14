@@ -1,6 +1,6 @@
 use crate::frame::FrameErrors;
 
-const SIZE_PAYLOAD: usize = 6;
+pub const SIZE_PAYLOAD: usize = 6;
 
 #[allow(non_camel_case_types)]
 #[repr(u16)]
@@ -58,6 +58,16 @@ impl Setting {
         let value = self.value.to_be_bytes();
 
         let bytes = [id[0], id[1], value[0], value[1], value[2], value[3]];
+
+        bytes
+    }
+
+    pub fn bytes(array: &[Setting]) -> Vec<u8> {
+        let mut bytes = Vec::with_capacity(array.len() * 6);
+
+        array.iter().for_each(|setting| {
+            bytes.append(&mut setting.to_bytes().to_vec());
+        });
 
         bytes
     }
