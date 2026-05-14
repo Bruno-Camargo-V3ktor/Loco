@@ -1,2 +1,2 @@
-mod connection;
-mod frame;
+pub mod connection;
+pub mod frame;

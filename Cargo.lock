@@ -9,7 +9,13 @@ version = "0.1.0"
 [[package]]
 name = "loco-server"
 version = "0.1.0"
+dependencies = [
+ "loco-h2",
+]
 
 [[package]]
 name = "locod"
 version = "0.1.0"
+dependencies = [
+ "loco-server",
+]
