@@ -31,4 +31,19 @@ impl Frame {
 
         Ok(Self { header, payload })
     }
+
+    pub fn to_bytes(&self) -> Vec<u8> {
+        let mut payload_bytes = self.payload.to_bytes();
+
+        let mut header = self.header.clone();
+        header.length = payload_bytes.len() as u32 & 0x00FFFFFF;
+        let mut header_bytes = header.to_bytes().to_vec();
+
+        let mut bytes = Vec::with_capacity(header_bytes.len() + payload_bytes.len());
+
+        bytes.append(&mut header_bytes);
+        bytes.append(&mut payload_bytes);
+
+        bytes
+    }
 }

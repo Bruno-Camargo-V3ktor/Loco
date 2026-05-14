@@ -1,8 +1,8 @@
 use crate::frame::{
+    FrameErrors,
     frame_type::FrameType,
     header::{Flags, FrameHeader},
     setting::Setting,
-    FrameErrors,
 };
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -114,6 +114,18 @@ impl FramePayload {
                 Ok(FramePayload::Settings(settings))
             }
             _ => Ok(FramePayload::Raw(payload.to_vec())),
+        }
+    }
+}
+
+impl FramePayload {
+    pub fn to_bytes(&self) -> Vec<u8> {
+        match self {
+            Self::Raw(bytes) => bytes.clone(),
+
+            _ => {
+                todo!()
+            }
         }
     }
 }
