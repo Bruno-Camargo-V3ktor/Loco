@@ -121,6 +121,16 @@ impl FramePayload {
 impl FramePayload {
     pub fn to_bytes(&self) -> Vec<u8> {
         match self {
+            Self::Settings(settings) => {
+                let mut bytes = Vec::with_capacity(settings.len() * 6);
+
+                settings.iter().for_each(|setting| {
+                    bytes.append(&mut setting.to_bytes().to_vec());
+                });
+
+                bytes
+            }
+
             Self::Raw(bytes) => bytes.clone(),
 
             _ => {

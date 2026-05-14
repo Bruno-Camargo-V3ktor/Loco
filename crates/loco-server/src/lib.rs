@@ -27,6 +27,8 @@ impl Server {
             let mut preface = [0; 24];
             stream.read_exact(&mut preface)?;
 
+            println!("PREFACE: {preface:?}");
+
             if preface == *PREFACE {
                 let mut header_bytes = [0; 9];
                 stream.read_exact(&mut header_bytes)?;

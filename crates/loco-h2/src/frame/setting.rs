@@ -52,5 +52,13 @@ impl Setting {
 
         Ok(settings)
     }
-}
 
+    pub fn to_bytes(&self) -> [u8; 6] {
+        let id = (self.id.clone() as u16).to_be_bytes();
+        let value = self.value.to_be_bytes();
+
+        let bytes = [id[0], id[1], value[0], value[1], value[2], value[3]];
+
+        bytes
+    }
+}
