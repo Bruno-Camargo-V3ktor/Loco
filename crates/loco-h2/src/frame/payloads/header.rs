@@ -66,4 +66,22 @@ impl Header {
             fragments,
         })
     }
+
+    pub fn to_bytes(&self) -> Vec<u8> {
+        let mut bytes = Vec::with_capacity(self.fragments.len() + self.padding as usize + 5);
+
+        if self.padding != 0 {
+            bytes.push(self.padding);
+        }
+
+        if self.exclusive {
+            let value = self.stream_id | ((self.exclusive as u32) << 31);
+            let mut exclusive = value.to_be_bytes().to_vec();
+            bytes.append(&mut exclusive);
+        }
+
+        bytes.append(&mut self.fragments.clone());
+        bytes.append(&mut vec![0; self.padding as usize]);
+        bytes
+    }
 }

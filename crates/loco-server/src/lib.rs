@@ -3,7 +3,10 @@ use std::{
     net::{IpAddr, TcpListener},
 };
 
-use loco_h2::{connection::PREFACE, frame::Frame};
+use loco_h2::{
+    connection::PREFACE,
+    frame::{Frame, frame_type::FrameType},
+};
 
 pub struct Server {
     addr: IpAddr,
@@ -42,7 +45,10 @@ impl Server {
                 total.append(&mut payload_bytes.to_vec());
 
                 let frame_parse = Frame::new(&total);
-                println!("{frame_parse:?}");
+
+                if let Ok(frame) = frame_parse {
+                    if frame.header.frame_type == FrameType::SETTINGS {}
+                }
             }
         }
 
